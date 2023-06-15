@@ -6,6 +6,13 @@ info:
     NASA provides free APIs for the public at https://api.nasa.gov/.
 
     Go there, sign up for an API key, and start using this OpenAPI specification.
+  contact:
+    name: Curtis "Ovid" Poe
+    email: curtis.poe@gmail.com
+    url: https://ovid.github.io
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
 
 servers:
   - url: https://api.nasa.gov
@@ -222,12 +229,16 @@ components:
       description: Latitude
       schema:
         type: number
+        minimum: -90
+        maximum: 90
     Longitude:
       name: lon
       in: query
       description: Longitude
       schema:
         type: number
+        minimum: -180
+        maximum: 180
     Dimensions:
       name: dim 
       in: query
