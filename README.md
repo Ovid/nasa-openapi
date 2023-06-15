@@ -11,8 +11,7 @@ Editor](https://editor.swagger.io/) to make it easier to read the document.
 You can use the [OpenAPI Generator](https://openapi-generator.tech/) to
 automatically build a client for your programming languages of choice.
 
-This project is a work in progress. Only three API endpoints are currently
-supported.
+This project is a work in progress. Not all APIs are currently supported.
 
 # MIT License
 
