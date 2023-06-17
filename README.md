@@ -13,7 +13,19 @@ Editor](https://editor.swagger.io/) to make it easier to read the document.
 You can use the [OpenAPI Generator](https://openapi-generator.tech/) to
 automatically build a client for your programming languages of choice.
 
-This project is a work in progress. Not all APIs are currently supported.
+This project is a work in progress. Not all APIs are currently supported. A
+[companion project written in Perl](https://github.com/Ovid/webservice-nasa)
+is being used to verify these APIs.
+
+Note that those NASA lists numberous APIs, not all of them are hosted on the
+same server. More servers will be added later.
+
+# Server `api.nasa.gov`
+
+The `api.nasa.gov` server OpenAPI specification:
+
+* [Raw output](https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/api-nasa-gov/openapi.yaml) (suitable for downloading)
+* [Github interface](https://github.com/Ovid/nasa-openapi/blob/main/nasa/api-nasa-gov/openapi.yaml)
 
 # MIT License
 
