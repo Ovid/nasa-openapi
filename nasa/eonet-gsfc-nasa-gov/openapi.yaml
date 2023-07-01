@@ -1,0 +1,340 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Unofficial NASA OpenAPI Specification
+  description: |
+    NASA provides free APIs for the public at [api.nasa.gov](https://api.nasa.gov/).
+
+    Go there, sign up for an API key, and start using this OpenAPI specification.
+  contact:
+    name: Curtis "Ovid" Poe
+    email: curtis.poe@gmail.com
+    url: https://ovid.github.io
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
+
+servers:
+  - url: https://eonet.gsfc.nasa.gov/api/v3
+    description: |
+      The Earth Observatory Natural Event Tracker
+
+      More and more NASA imagery is being made available via web services
+      (WMS, WMTS, etc.) and a significant percentage of it is being produced
+      and published in near real time (NRT=within a few hours after
+      acquisition). This ability means that NASA imagery can be used more
+      routinely to examine current natural events as they happen.
+
+      Using client applications, such as [NASA EOSDIS’
+      Worldview](https://worldview.earthdata.nasa.gov/), users can browse the
+      entire globe daily and look for natural events as they occur. Storms are
+      regularly spotted in the tropics, dust storms over deserts, forest fires
+      in the summers. These events are occurring constantly and NASA NRT
+      imagery can represent them all using a variety of different data
+      parameters. However, the user’s experience is tailored, and therefore
+      restricted, by the client application. What if there was an API that
+      provided a curated list of natural events and provided a way to link
+      those events to event-related NRT image layers? Enter EONET.
+
+      The Earth Observatory Natural Event Tracker (EONET) is a prototype web
+      service with the goal of providing a curated source of continuously
+      updated natural event metadata; providing a service that links those
+      natural events to thematically-related web service-enabled image sources
+      (e.g., via WMS, WMTS, etc.). Please see [our API
+      documentation](https://eonet.gsfc.nasa.gov/docs/v3) to learn more about
+      how to use the EONET web services.
+
+      Development of EONET began in 2015 and has been supported by [NASA’s
+      Earth Observatory](https://earthobservatory.nasa.gov/) and [Earth
+      Science Data and Information System (ESDIS)
+      Project](https://www.earthdata.nasa.gov/esdis).
+
+paths:
+  /events:
+    get:
+      x-name: Natural events from EONET.
+      description: Returns a list of natural events currently occurring on Earth.
+      parameters:
+        - $ref: '#/components/parameters/EventSource'
+          required: false
+          example: InciWeb
+        - $ref: '#/components/parameters/EventCategory'
+          required: false
+          example: volcanoes
+        - $ref: '#/components/parameters/EventStatus'
+          required: false
+          example: open
+        - name: limit
+          in: query
+          description: The maximum number of events to return
+          required: false
+          example: 10
+          schema:
+            type: integer
+            minimum: 1
+        - name: days
+          in: query
+          description: The maximum number of days to return
+          required: false
+          example: 10
+          schema:
+            type: integer
+            minimum: 1
+        - name: start
+          in: query
+          description: The start date of the events
+          required: false
+          example: 2018-01-01
+          schema:
+            type: string
+            format: date
+        - name: end
+          in: query
+          description: The end date of the events
+          required: false
+          example: 2018-01-02
+          schema:
+            type: string
+            format: date
+        - name: magID
+          in: query
+          description: EONET Event Magnitudes
+          required: false
+          example: mag_key
+          schema:
+            type: integer
+            enum: [
+              "mag_kts", # Average Max Sustained Winds reported for severe storms.
+              "mms",     # Moment magnitude scale (MMS) denoted as Mw : measure of an earthquake.
+              "sq_NM"    # Nautical miles squared used to measure area of icebergs.
+            ]
+        - name: magMin
+          in: query
+          description: The minimum magnitude of the events
+          required: false
+          example: 5
+          schema:
+            type: number
+        - name: magMax
+          in: query
+          description: The maximum magnitude of the events
+          required: false
+          example: 10
+          schema:
+            type: number
+        - name: bbox
+          in: query
+          description: 'Query using a bounding box for all events with datapoints that fall within. This uses two pairs of coordinates: the upper left hand corner (lon,lat) followed by the lower right hand corner (lon,lat).'
+          required: false
+          example: '-180,-90,180,90'
+          schema:
+            type: string
+            format: bbox
+      responses:
+        '200':
+          description: Earth events retrieved successfully
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+              example: { "title": "EONET Events", "description": "Natural events from EONET.", "link": "https://eonet.gsfc.nasa.gov/api/v3/events", "events": [ { "id": "EONET_6374", "title": "Hurricane Adrian", "description": null, "link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_6374", "closed": null, "categories": [ { "id": "severeStorms", "title": "Severe Storms" } ], "sources": [ { "id": "JTWC", "url": "https://www.metoc.navy.mil/jtwc/products/ep0123.tcw" } ], "geometry": [ { "magnitudeValue": 40.00, "magnitudeUnit": "kts", "date": "2023-06-27T18:00:00Z", "type": "Point", "coordinates": [ -105.5, 15.2 ] }, { "magnitudeValue": 50.00, "magnitudeUnit": "kts", "date": "2023-06-28T00:00:00Z", "type": "Point", "coordinates": [ -106.4, 15.2 ] }, { "magnitudeValue": 55.00, "magnitudeUnit": "kts", "date": "2023-06-28T06:00:00Z", "type": "Point", "coordinates": [ -107.2, 15.3 ] }, { "magnitudeValue": 65.00, "magnitudeUnit": "kts", "date": "2023-06-28T12:00:00Z", "type": "Point", "coordinates": [ -107.8, 15.2 ] }, { "magnitudeValue": 70.00, "magnitudeUnit": "kts", "date": "2023-06-28T18:00:00Z", "type": "Point", "coordinates": [ -108.1, 15.3 ] }, { "magnitudeValue": 70.00, "magnitudeUnit": "kts", "date": "2023-06-29T00:00:00Z", "type": "Point", "coordinates": [ -108.7, 15.3 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T06:00:00Z", "type": "Point", "coordinates": [ -109.5, 15.4 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T12:00:00Z", "type": "Point", "coordinates": [ -110, 15.8 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T18:00:00Z", "type": "Point", "coordinates": [ -110.4, 16.2 ] }, { "magnitudeValue": 80.00, "magnitudeUnit": "kts", "date": "2023-06-30T00:00:00Z", "type": "Point", "coordinates": [ -111, 16.5 ] }, { "magnitudeValue": 85.00, "magnitudeUnit": "kts", "date": "2023-06-30T06:00:00Z", "type": "Point", "coordinates": [ -111.5, 16.6 ] }, { "magnitudeValue": 85.00, "magnitudeUnit": "kts", "date": "2023-06-30T12:00:00Z", "type": "Point", "coordinates": [ -111.9, 17.1 ] }, { "magnitudeValue": 95.00, "magnitudeUnit": "kts", "date": "2023-06-30T18:00:00Z", "type": "Point", "coordinates": [ -112.5, 17.5 ] }, { "magnitudeValue": 80.00, "magnitudeUnit": "kts", "date": "2023-07-01T00:00:00Z", "type": "Point", "coordinates": [ -113.2, 17.9 ] } ] } ] }
+              x-test:
+                - name: get EONET events
+                  args: 
+                    category: severeStorms,wildfires
+                    limit: 1
+                  response:
+                    expected: { "title": "EONET Events", "description": "Natural events from EONET.", "link": "https://eonet.gsfc.nasa.gov/api/v3/events", "events": [ { "id": "EONET_6374", "title": "Hurricane Adrian", "description": null, "link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_6374", "closed": null, "categories": [ { "id": "severeStorms", "title": "Severe Storms" } ], "sources": [ { "id": "JTWC", "url": "https://www.metoc.navy.mil/jtwc/products/ep0123.tcw" } ], "geometry": [ { "magnitudeValue": 40.00, "magnitudeUnit": "kts", "date": "2023-06-27T18:00:00Z", "type": "Point", "coordinates": [ -105.5, 15.2 ] }, { "magnitudeValue": 50.00, "magnitudeUnit": "kts", "date": "2023-06-28T00:00:00Z", "type": "Point", "coordinates": [ -106.4, 15.2 ] }, { "magnitudeValue": 55.00, "magnitudeUnit": "kts", "date": "2023-06-28T06:00:00Z", "type": "Point", "coordinates": [ -107.2, 15.3 ] }, { "magnitudeValue": 65.00, "magnitudeUnit": "kts", "date": "2023-06-28T12:00:00Z", "type": "Point", "coordinates": [ -107.8, 15.2 ] }, { "magnitudeValue": 70.00, "magnitudeUnit": "kts", "date": "2023-06-28T18:00:00Z", "type": "Point", "coordinates": [ -108.1, 15.3 ] }, { "magnitudeValue": 70.00, "magnitudeUnit": "kts", "date": "2023-06-29T00:00:00Z", "type": "Point", "coordinates": [ -108.7, 15.3 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T06:00:00Z", "type": "Point", "coordinates": [ -109.5, 15.4 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T12:00:00Z", "type": "Point", "coordinates": [ -110, 15.8 ] }, { "magnitudeValue": 75.00, "magnitudeUnit": "kts", "date": "2023-06-29T18:00:00Z", "type": "Point", "coordinates": [ -110.4, 16.2 ] }, { "magnitudeValue": 80.00, "magnitudeUnit": "kts", "date": "2023-06-30T00:00:00Z", "type": "Point", "coordinates": [ -111, 16.5 ] }, { "magnitudeValue": 85.00, "magnitudeUnit": "kts", "date": "2023-06-30T06:00:00Z", "type": "Point", "coordinates": [ -111.5, 16.6 ] }, { "magnitudeValue": 85.00, "magnitudeUnit": "kts", "date": "2023-06-30T12:00:00Z", "type": "Point", "coordinates": [ -111.9, 17.1 ] }, { "magnitudeValue": 95.00, "magnitudeUnit": "kts", "date": "2023-06-30T18:00:00Z", "type": "Point", "coordinates": [ -112.5, 17.5 ] }, { "magnitudeValue": 80.00, "magnitudeUnit": "kts", "date": "2023-07-01T00:00:00Z", "type": "Point", "coordinates": [ -113.2, 17.9 ] } ] } ] }
+        '400':
+          description: Bad request
+      tags:
+        - earth
+components:
+  schemas:
+    EONETEvents:
+      type: object
+      properties:
+        title:
+          type: string
+          example: EONET Events
+          description: The title of JSON document
+        description:
+          type: string
+          example: Natural events from EONET.
+          description: The description of JSON document
+        link:
+          type: string
+          example: https://eonet.gsfc.nasa.gov/api/v3/events
+          description: The URL of this page
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EONETEvent'
+          description: The list of events
+    EONETEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          example: EONET_354
+          description: The unique identifier of the event
+        title:
+          type: string
+          example: Wildfire - Colorado, United States
+          description: The title of the event
+        description:
+          type: string
+          example: The 117 Fire is burning in El Paso County, Colorado, United States. The fire started on April 17, 2018 and is currently 100% contained as of April 19, 2018. The fire has burned 60 acres and destroyed 23 homes.
+          description: The description of the event
+        link:
+          type: string
+          example: https://eonet.gsfc.nasa.gov/api/v3/events/EONET_354
+          description: The URL of this event
+        closed:
+          type: string
+          format: date-time
+          example: 2018-04-19T00:00:00Z
+          description: The date and time the event was closed
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/EONETCategory'
+          description: The list of categories
+        sources:
+          type: array
+          description: The list of sources
+        geometries:
+          type: array
+          items:
+            $ref: '#/components/schemas/EONETGeometry'
+          description: The list of geometries
+    EONETCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          example: wildfires
+          description: The unique identifier of the category
+        title:
+          type: string
+          example: Wildfires
+          description: The title of the category
+        link:
+          type: string
+          example: https://eonet.gsfc.nasa.gov/api/v3/categories/wildfires
+          description: The URL of this category
+    EONETGeometry:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: 2018-04-17T00:00:00Z
+          description: The date and time of the event
+        type:
+          type: string
+          example: Point
+          description: The type of the geometry
+        coordinates:
+          type: array
+          items:
+            type: number
+          example: [-104.556, 38.896]
+          description: The coordinates of the event
+        magnitudeValue:
+          type: number
+          example: 60.70
+          description: The magnitude value of the event
+        magnitudeUnit:
+          type: string
+          example: NM^2
+          description: The magnitude unit of the event
+  parameters:
+    EventSource:
+      name: source
+      in: query
+      description: Source of each earth event
+      schema:
+        type: string
+
+        # list via https://eonet.gsfc.nasa.gov/api/v3/sources
+
+        # list via https://eonet.gsfc.nasa.gov/api/v3/categories
+        # XXX Unfortunately, the query string allows "source=CALFIRE,CEMS" or any combination
+        # You can't put that in an enum, so we'll just leave it as a string for now. They should have used
+        # "source=CALFIRE&source=CEMS" instead.
+        #enum: [
+        #  "ABFIRE",
+        #  "AU_BOM",
+        #  "AVO",
+        #  "BCWILDFIRE",
+        #  "BYU_ICE",
+        #  "CALFIRE",
+        #  "CEMS",
+        #  "DFES_WA",
+        #  "EO",
+        #  "FEMA",
+        #  "FloodList",
+        #  "GDACS",
+        #  "GLIDE",
+        #  "HDDS",
+        #  "IDC",
+        #  "InciWeb",
+        #  "JTWC",
+        #  "MBFIRE",
+        #  "MRR",
+        #  "NASA_DISP",
+        #  "NASA_ESRS",
+        #  "NASA_HURR",
+        #  "NATICE",
+        #  "NOAA_CPC",
+        #  "NOAA_NHC",
+        #  "PDC",
+        #  "ReliefWeb",
+        #  "SIVolcano",
+        #  "UNISYS",
+        #  "USGS_CMT",
+        #  "USGS_EHP"
+        #]
+    EventCategory:
+      name: category
+      in: query
+      description: Category of each earth event
+      schema:
+        type: string
+
+        # list via https://eonet.gsfc.nasa.gov/api/v3/categories
+        # XXX Unfortunately, the query string allows "category=drought,dustHaze" or any combination
+        # You can't put that in an enum, so we'll just leave it as a string for now. They should have used
+        # "category=drought&category=dustHaze" instead.
+        #enum: [
+        #  "drought",
+        #  "dustHaze",
+        #  "earthquakes",
+        #  "floods",
+        #  "landslides",
+        #  "manmade",
+        #  "seaLakeIce",
+        #  "severeStorms",
+        #  "snow",
+        #  "tempExtremes",
+        #  "volcanoes",
+        #  "waterColor",
+        #  "wildfires"
+        #]
+    EventStatus:
+      name: status
+      in: query
+      description: Status of each earth event
+      schema:
+        type: string
+        enum: [
+          "open",
+          "closed",
+          "all"
+        ]
+tags:
+  - name: earth
+    description: Earth imagery
+  - name: images
+    description: APIs related to fetching images
