@@ -6,13 +6,6 @@ them, so I've been building an [OpenAPI](https://www.openapis.org/) document,
 starting with [api.nasa.gov](https://api.nasa.gov), found in
 `nasa/api-nasa-gov/openapi.yaml`.
 
-You can view the docs at
-[Redocly](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/api-nasa-gov/openapi.yaml)
-or, if you prefer, you can drop the document into [the online Swagger
-Editor](https://editor.swagger.io/) to make it easier to read the document.
-You can use the [OpenAPI Generator](https://openapi-generator.tech/) to
-automatically build a client for your programming languages of choice.
-
 This project is a work in progress. Not all APIs are currently supported. A
 [companion project written in Perl](https://github.com/Ovid/webservice-nasa)
 is being used to verify these APIs.
@@ -26,6 +19,15 @@ The `api.nasa.gov` server OpenAPI specification:
 
 * [Raw output](https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/api-nasa-gov/openapi.yaml) (suitable for downloading)
 * [Github interface](https://github.com/Ovid/nasa-openapi/blob/main/nasa/api-nasa-gov/openapi.yaml)
+* [Redocly](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/api-nasa-gov/openapi.yaml)
+
+# Server `eonet.gsfc.nasa.gov/api/v3`
+
+The `eonet.gsfc.nasa.gov/api/v3` specification:
+
+* [Raw output](https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/eonet-gsfc-nasa-gov/openapi.yaml) (suitable for downloading)
+* [Github interface](https://github.com/Ovid/nasa-openapi/blob/main/nasa/eonet-gsfc-nasa-gov/openapi.yaml)
+* [Redocly](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/Ovid/nasa-openapi/main/nasa/eonet-gsfc-nasa-gov/openapi.yaml)
 
 # MIT License
 
