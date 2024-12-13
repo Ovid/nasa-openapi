@@ -10,7 +10,7 @@ This project is a work in progress. Not all APIs are currently supported. A
 [companion project written in Perl](https://github.com/Ovid/webservice-nasa)
 is being used to verify these APIs.
 
-Note that those NASA lists numberous APIs, not all of them are hosted on the
+Note that those NASA lists numerous APIs, not all of them are hosted on the
 same server. More servers will be added later.
 
 # Server `api.nasa.gov`
